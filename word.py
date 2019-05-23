@@ -221,6 +221,68 @@ def checkWordIntersect(w, direction, line, char):
             return True
         else:
             return False
+    elif direction == 5:
+        condition = True
+        # checking down
+        endLine = line + len(w) + 1
+        inc = line
+        while inc <= endLine:
+            if puzzle[inc][char] != '+':
+                condition = False
+            else:
+                pass
+            inc += 1
+        if condition == True:
+            return True
+        else:
+            return False
+    elif direction == 6:
+        condition = True
+        # checking down-left
+        endLine = line + len(w) + 1
+        inc = line
+        while inc <= endLine:
+            if puzzle[inc][char] != '+':
+                condition = False
+            else:
+                pass
+            inc += 1
+            char -= 1
+        if condition == True:
+            return True
+        else:
+            return False
+    elif direction == 7:
+        condition = True
+        # checking left
+        endChar = char - len(w) + 1
+        inc = char
+        while inc >= endChar:
+            if puzzle[line][inc] != '+':
+                condition = False
+            else:
+                pass
+            inc -= 1
+        if condition == True:
+            return True
+        else:
+            return False
+    elif direction == 8:
+        condition = True
+        # checking up-left
+        endChar = char - len(w) + 1
+        inc = char
+        while inc >= endChar:
+            if puzzle[line][inc] != '+':
+                condition = False
+            else:
+                pass
+            inc -= 1
+            line -= 1
+        if condition == True:
+            return True
+        else:
+            return False
         
 print("\n\n\n")
 puzzle = buildGrid(15,15)
@@ -247,4 +309,4 @@ puzzle[1][5] = 'O'
 
 printCleanGrid(puzzle)
 
-print(checkWordIntersect('WEARABLE',4,3,2))
+print(checkWordIntersect('WEARABLE',8,4,4))
