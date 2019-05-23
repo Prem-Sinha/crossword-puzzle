@@ -61,15 +61,15 @@ def placeWord(w, puzzle):
                     inc -=  1
                     ch += 1
             return puzzle
-        else:
-            #print("cannot insert")
-            return False
     elif puzzle[rLine][rChar] != "+":
         # something is here, cant do it man
         print("error: space is used already")
     else:
         print("definitely cant do anything here")
 
+#
+# All check() functions need to only return True/False
+#
 
 # check if word will spill out of the bounds of the puzzle
 def checkWord(w, direction, line, char):
@@ -88,28 +88,49 @@ def checkWord(w, direction, line, char):
             #print("word: %s, direction: up, line: %s, char: %s" % (w, line, char))
     elif direction == 2:
         # up-right
-        pass
+        if line - len(w) <= 0 or char + len(w) > 14:
+            return False
+        else:
+            return True
     elif direction == 3:
         # right
-        pass
+        if char + len(w) > 14:
+            return False
+        else:
+            return True
     elif direction == 4:
         # down-right
-        pass
+        if line + len(w) > 14 or char + len(w) > 14:
+            return False
+        else:
+            return True
     elif direction == 5:
         # down
-        pass
+        if line + len(w) > 14:
+            return False
+        else:
+            return True
     elif direction == 6:
         # down-left
-        pass
+        if line + len(w) > 14 or char - len(w) < 0:
+            return False
+        else:
+            return True
     elif direction == 7:
         # left
-        pass
+        if char - len(w) < 0:
+            return False
+        else:
+            return True
     elif direction == 8:
         # up-left
-        pass
+        if line - len(w) < 0 or char - len(w) < 0:
+            return False
+        else:
+            return True
     else:
         # this should never happen
-        pass
+        return False
     
 
 # check if word will spill out of the bounds of the puzzle
@@ -147,7 +168,9 @@ words = ['ALPHA','BRAVO','CHARLIE','DELTA']
 
 #p = placeWord(words[1], puzzle)
 #printCleanGrid(p)
+"""
 for word in words:
     puzzle = placeWord(word, puzzle)
     printCleanGrid(puzzle)
-
+"""
+print(checkWord('SAVAGE', 8, 12, 3))
