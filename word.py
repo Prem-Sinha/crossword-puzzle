@@ -71,6 +71,18 @@ def placeWord(w, puzzle):
 # All check() functions need to only return True/False
 #
 
+# check a single line/char location for presence of existing characters or empty marker
+def checkLocation(w, line, char):
+    if puzzle[line][char] == "+":
+        # valid place to put a character, nothing there yet
+        return True
+    elif puzzle[line][char] != "+":
+        # not valid, there is already a character there
+        return False
+    else:
+        # this should probably never happen
+        pass
+
 # check if word will spill out of the bounds of the puzzle
 def checkWord(w, direction, line, char):
     # 
@@ -156,7 +168,60 @@ def checkWordIntersect(w, direction, line, char):
             return True
         else:
             return False
-    
+    elif direction == 2:
+        condition = True
+        # lets insert a up-right aligned word
+        endLine = line - len(w) + 1
+        # need to increment the char value since this is diagnoal
+        inc = line
+        while inc >= endLine:
+            if puzzle[inc][char] != '+':
+                # something here, cant place a character
+                condition = False
+            else:
+                # nothing here, leave condition set to True
+                pass
+            # now lets increment char
+            inc -= 1
+            char += 1
+        if condition == True:
+            return True
+        else:
+            return False
+    elif direction == 3:
+        condition = True
+        # lets look right for intersects
+        endChar = char + len(w) + 1
+        inc = char
+        while inc <= endChar:
+            if puzzle[line][inc] != '+':
+                # somethign here, cant place character
+                condition = False
+            else:
+                # nothing here, leave condition alone for now
+                pass
+            inc += 1
+        if condition == True:
+            return True
+        else:
+            return False
+    elif direction == 4:
+        condition = True
+        # checking down-right
+        endChar = char + len(w) + 1
+        inc = char
+        while inc <= endChar:
+            if puzzle[line][inc] != '+':
+                condition = False
+            else:
+                pass
+            inc += 1
+            line += 1
+        if condition == True:
+            return True
+        else:
+            return False
+        
 print("\n\n\n")
 puzzle = buildGrid(15,15)
 #printGrid(puzzle)
@@ -173,4 +238,13 @@ for word in words:
     puzzle = placeWord(word, puzzle)
     printCleanGrid(puzzle)
 """
-print(checkWord('SAVAGE', 8, 12, 3))
+#print(checkWord('SAVAGE', 8, 12, 3))
+puzzle[5][5] = 'B'
+puzzle[4][5] = 'R'
+puzzle[3][5] = 'A'
+puzzle[2][5] = 'V'
+puzzle[1][5] = 'O'
+
+printCleanGrid(puzzle)
+
+print(checkWordIntersect('WEARABLE',4,3,2))
