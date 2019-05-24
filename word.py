@@ -35,6 +35,15 @@ def printCleanGrid(p):
     for line in puzzle:
         print(line)
 
+# put a word into the field, this function checks nothing at all!
+def putWord(w, direction, line, char):
+    if direction == 3:
+        # flowing word to the right, line will not change
+        c = 0
+        while char <= len(w) + 1:
+            puzzle[line][char] = w[c]
+            char += 1
+            c += 1
 # this function picks a location for a word, hopefully smartly
 def placeWord(w, puzzle):
     # now we pick a direction for this word
@@ -145,6 +154,43 @@ def checkWord(w, direction, line, char):
         return False
     
 
+# find specific character(s) of intersection
+def checkWordOverlap(w, direction, line, char):
+    # we will only work with a left search for now
+    if direction == 3:
+        condition = False
+        # lets look right for intersects
+        endChar = char + len(w) + 1
+        inc = char
+        i = 0
+        while inc <= endChar:
+            if puzzle[line][inc] != '+':
+                # somethign here, cant place character
+                #condition = False
+                # we need to first determine the overlaps
+                #print(line, inc)
+                #print(puzzle[line][inc])
+                #print(w[i])
+                condition = True
+                """
+                if puzzle[line][inc] == w[inc - char + 1]:
+                    print("line: %s char :%s"% (line, inc)) 
+                    print(puzzle[line][inc],w[i])
+                else:
+                    # no match found
+                    print("no match found on overlap")
+                    print("line: %s char :%s"% (line, inc)) 
+                    print(puzzle[line][inc],w[inc - char + 1])
+                """  
+            else:
+                # nothing here, leave condition alone for now
+                pass
+            inc += 1
+            i += 1
+        if condition == True:
+            return True
+        else:
+            return False
 # check if word will spill out of the bounds of the puzzle
 def checkWordIntersect(w, direction, line, char):
     if direction == 1:
@@ -306,7 +352,26 @@ puzzle[4][5] = 'R'
 puzzle[3][5] = 'A'
 puzzle[2][5] = 'V'
 puzzle[1][5] = 'O'
+"""
+puzzle[3][3] = 'B'
+puzzle[4][3] = 'A'
+puzzle[5][3] = 'R'
+puzzle[6][3] = 'G'
+"""
 
+puzzle[2][8] = 'D'
+puzzle[3][8] = 'U'
+puzzle[4][8] = 'D'
+puzzle[2][8] = 'E'
 printCleanGrid(puzzle)
 
-print(checkWordIntersect('WEARABLE',8,4,4))
+#print(checkWordIntersect('BROWN',3,4,4))
+word = 'ABROAD'
+if checkWordIntersect(word,3,4,3) == False:
+    print("there is an intersection, we need to check some other things first before excluding this location")
+    if checkWordOverlap(word,3,4,3) == True:
+        # good to go, lets put a word into play!
+        putWord(word,3,4,3)
+        printCleanGrid(puzzle)
+else:
+    print("no intersection found at all")
