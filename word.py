@@ -37,12 +37,72 @@ def printCleanGrid(p):
 
 # put a word into the field, this function checks nothing at all!
 def putWord(w, direction, line, char):
-    if direction == 3:
+    if direction == 1:
+        # flowing word up, line changes, character does not
+        c = 0
+        for ch in w: 
+            puzzle[line][char] = w[c]
+            line -= 1
+            c += 1
+    elif direction == 2:
+        # flowing up-right, gets tricky
+        # char increases, line decreases
+        c = 0
+        for ch in w:
+            puzzle[line][char] = w[c]
+            char += 1
+            line -= 1
+            c += 1
+
+    elif direction == 3:
         # flowing word to the right, line will not change
         c = 0
         while char <= len(w) + 1:
             puzzle[line][char] = w[c]
             char += 1
+            c += 1
+    elif direction == 4:
+        # flowing down-right
+        # char increases, line increases
+        c = 0
+        for ch in w:
+            puzzle[line][char] = w[c]
+            char += 1
+            line += 1
+            c += 1
+    elif direction == 5:
+        # flowing down
+        # char doesnt change, line increases
+        c = 0
+        for ch in w:
+            puzzle[line][char] = w[c]
+            line += 1
+            c += 1
+    elif direction == 6:
+        # flowing down-left
+        # char decreases, line increases
+        c = 0
+        for ch in w:
+            puzzle[line][char] = w[c]
+            char -= 1
+            line += 1
+            c += 1
+    elif direction == 7:
+        # flowing left
+        # char decreases, line does not change
+        c = 0
+        for ch in w:
+            puzzle[line][char] = w[c]
+            char -= 1
+            c += 1
+    elif direction == 8:
+        # flowing up-left
+        # char decreases, line decreases
+        c = 0
+        for ch in w:
+            puzzle[line][char] = w[c]
+            char -= 1
+            line -= 1
             c += 1
 # this function picks a location for a word, hopefully smartly
 def placeWord(w, puzzle):
@@ -93,6 +153,7 @@ def checkLocation(w, line, char):
         pass
 
 # check if word will spill out of the bounds of the puzzle
+# returns True if word fits, False if it does not
 def checkWord(w, direction, line, char):
     # 
     # first a simple bounds check
@@ -191,8 +252,12 @@ def checkWordOverlap(w, direction, line, char):
             return True
         else:
             return False
+
 # check if word will spill out of the bounds of the puzzle
+# returns False if there is a word intersection, True if there is NOT
+
 def checkWordIntersect(w, direction, line, char):
+    # returns False if something is blocking/intersecting
     if direction == 1:
         condition = True
         # lets insert a word upwards
@@ -332,26 +397,15 @@ def checkWordIntersect(w, direction, line, char):
         
 print("\n\n\n")
 puzzle = buildGrid(15,15)
-#printGrid(puzzle)
-#print(puzzle[1][2])
-# excellent, we can access thins just a i thought line,character
 
 words = ['ALPHA','BRAVO','CHARLIE','DELTA']
 
-
-#p = placeWord(words[1], puzzle)
-#printCleanGrid(p)
-"""
-for word in words:
-    puzzle = placeWord(word, puzzle)
-    printCleanGrid(puzzle)
-"""
-#print(checkWord('SAVAGE', 8, 12, 3))
 puzzle[5][5] = 'B'
 puzzle[4][5] = 'R'
 puzzle[3][5] = 'A'
 puzzle[2][5] = 'V'
 puzzle[1][5] = 'O'
+
 """
 puzzle[3][3] = 'B'
 puzzle[4][3] = 'A'
@@ -359,14 +413,29 @@ puzzle[5][3] = 'R'
 puzzle[6][3] = 'G'
 """
 
+"""
 puzzle[2][8] = 'D'
 puzzle[3][8] = 'U'
 puzzle[4][8] = 'D'
 puzzle[2][8] = 'E'
+"""
 printCleanGrid(puzzle)
 
-#print(checkWordIntersect('BROWN',3,4,4))
-word = 'ABROAD'
+
+word = 'GOATS'
+"""
+# checking the correct movements for putWord()
+putWord('TOSS',1,14,14)
+putWord('ROTE',2,14,0)
+putWord('MITE',4,0,0)
+putWord('TACO',5,0,14)
+putWord('BOAT',6,0,12)
+putWord('BOTTOM',7,14,12)
+putWord('ROOK',8,9,3)
+printCleanGrid(puzzle)
+"""
+
+"""
 if checkWordIntersect(word,3,4,3) == False:
     print("there is an intersection, we need to check some other things first before excluding this location")
     if checkWordOverlap(word,3,4,3) == True:
@@ -375,3 +444,4 @@ if checkWordIntersect(word,3,4,3) == False:
         printCleanGrid(puzzle)
 else:
     print("no intersection found at all")
+"""
