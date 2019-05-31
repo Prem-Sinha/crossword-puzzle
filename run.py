@@ -14,4 +14,13 @@ wf.putWord('BOAT',6,0,12)
 wf.putWord('BOTTOM',7,14,12)
 wf.putWord('ROOK',8,9,3)
 
-print(wf.printCleanGrid(wf.puzzle))
+#print(wf.printCleanGrid(wf.puzzle))
+
+#print(wf.checkWordOverlap('CAT',3,0,4))
+
+print(wf.checkWordIntersect('DO', 8, 14, 4))
+
+#print(wf.puzzle[4][0])
+#print(wf.puzzle[4][1])
+#print(wf.puzzle[4][2])
+#print(wf.puzzle[4][3])

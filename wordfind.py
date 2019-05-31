@@ -166,7 +166,7 @@ class Wordfind(object):
 
     # check if word will spill out of the bounds of the puzzle
     # returns True if word fits, False if it does not
-    def checkWord(w, direction, line, char):
+    def checkWord(self, w, direction, line, char):
         # 
         # first a simple bounds check
         #
@@ -228,181 +228,155 @@ class Wordfind(object):
     
 
     # find specific character(s) of intersection
-    def checkWordOverlap(w, direction, line, char):
+    def checkWordOverlap(self, w, direction, line, char):
         # we will only work with a left search for now
         if direction == 3:
             condition = False
             # lets look right for intersects
             endChar = char + len(w) + 1
-            inc = char
-            i = 0
-            while inc <= endChar:
-                if puzzle[line][inc] != '+':
-                    # somethign here, cant place character
-                    #condition = False
-                    # we need to first determine the overlaps
-                    #print(line, inc)
-                    #print(puzzle[line][inc])
-                    #print(w[i])
-                    condition = True
-                    """
-                    if puzzle[line][inc] == w[inc - char + 1]:
-                        print("line: %s char :%s"% (line, inc)) 
-                        print(puzzle[line][inc],w[i])
+            if endChar > 14:
+                return False
+            else:
+                inc = char
+                i = 0
+                while inc <= endChar:
+                    if self.puzzle[line][inc] != '+':
+                        # somethign here, cant place character
+                        #condition = False
+                        # we need to first determine the overlaps
+                        #print(line, inc)
+                        #print(puzzle[line][inc])
+                        #print(w[i])
+                        condition = True
+                        """
+                        if puzzle[line][inc] == w[inc - char + 1]:
+                            print("line: %s char :%s"% (line, inc)) 
+                            print(puzzle[line][inc],w[i])
+                        else:
+                            # no match found
+                            print("no match found on overlap")
+                            print("line: %s char :%s"% (line, inc)) 
+                            print(puzzle[line][inc],w[inc - char + 1])
+                        """  
                     else:
-                        # no match found
-                        print("no match found on overlap")
-                        print("line: %s char :%s"% (line, inc)) 
-                        print(puzzle[line][inc],w[inc - char + 1])
-                    """  
-                else:
-                    # nothing here, leave condition alone for now
-                    pass
-                inc += 1
-                i += 1
+                        # nothing here, leave condition alone for now
+                        pass
+                    inc += 1
+                    i += 1
             if condition == True:
                 return True
             else:
                 return False
 
-    # check if word will spill out of the bounds of the puzzle
+    
     # returns False if there is a word intersection, True if there is NOT
 
-    def checkWordIntersect(w, direction, line, char):
+    def checkWordIntersect(self, w, direction, line, char):
         # returns False if something is blocking/intersecting
+
+        # this function will not check if something would flow out of bounds
+        # that needs to be done BEFORE using this function
+
         if direction == 1:
+            # up
             condition = True
-            # lets insert a word upwards
-            endLine = line - len(w) + 1 # this math checks out!
-            #print("rLine: %s , endLine: %s" % (rLine,endLine))
+            endLine = line - len(w) + 1 # needs to be +1 instead of -1 for some reason?
             inc = line
-            ch = 0
             while inc >= endLine:
-                if puzzle[inc][char] != '+':
-                    # this incidates there is something in space we would occupy
+                if self.puzzle[inc][char] != '+':
                     condition = False
                 else:
-                    # this should only happen if space has a +
                     pass
-                inc -=  1
-                ch += 1
-            if condition == True:
-                # we are good to insert, no failures picked up
-                return True
-            else:
-                return False
+                inc -= 1
+            return condition
         elif direction == 2:
+            # up-right
             condition = True
-            # lets insert a up-right aligned word
-            endLine = line - len(w) + 1
-            # need to increment the char value since this is diagnoal
+            endLine = line - len(w) - 1
             inc = line
             while inc >= endLine:
-                if puzzle[inc][char] != '+':
+                if self.puzzle[inc][char] != '+':
+                    condition = False
+                else:
+                    pass
+                inc -= 1
+                char += 1
+            return condition
+        elif direction == 3:
+            # right
+            condition = True
+            endChar = char + len(w) - 1
+            inc = char
+            while inc <= endChar:
+                if self.puzzle[line][inc] != '+':
                     # something here, cant place a character
                     condition = False
                 else:
-                    # nothing here, leave condition set to True
-                    pass
-                # now lets increment char
-                inc -= 1
-                char += 1
-            if condition == True:
-                return True
-            else:
-                return False
-        elif direction == 3:
-            condition = True
-            # lets look right for intersects
-            endChar = char + len(w) + 1
-            inc = char
-            while inc <= endChar:
-                if puzzle[line][inc] != '+':
-                    # somethign here, cant place character
-                    condition = False
-                else:
-                    # nothing here, leave condition alone for now
+                    # nothing here, we are good
                     pass
                 inc += 1
-            if condition == True:
-                return True
-            else:
-                return False
+            return condition
         elif direction == 4:
+            # down-right
             condition = True
-            # checking down-right
-            endChar = char + len(w) + 1
+            endChar = char + len(w) - 1
             inc = char
             while inc <= endChar:
-                if puzzle[line][inc] != '+':
+                if self.puzzle[line][inc] != '+':
                     condition = False
                 else:
                     pass
                 inc += 1
                 line += 1
-            if condition == True:
-                return True
-            else:
-                return False
+            return condition
         elif direction == 5:
+            # down
             condition = True
-            # checking down
-            endLine = line + len(w) + 1
+            endLine = line + len(w) - 1
             inc = line
             while inc <= endLine:
-                if puzzle[inc][char] != '+':
+                if self.puzzle[inc][char] != '+':
                     condition = False
                 else:
                     pass
                 inc += 1
-            if condition == True:
-                return True
-            else:
-                return False
+            return condition
         elif direction == 6:
+            # down-left
             condition = True
-            # checking down-left
-            endLine = line + len(w) + 1
-            inc = line
-            while inc <= endLine:
-                if puzzle[inc][char] != '+':
+            endLine = line + len(w) - 1
+            while line <= endLine:
+                if self.puzzle[line][char] != '+':
                     condition = False
                 else:
                     pass
-                inc += 1
+                line += 1
                 char -= 1
-            if condition == True:
-                return True
-            else:
-                return False
+            return condition
+
         elif direction == 7:
+            # left
             condition = True
-            # checking left
             endChar = char - len(w) + 1
-            inc = char
-            while inc >= endChar:
-                if puzzle[line][inc] != '+':
+            while char >= endChar:
+                if self.puzzle[line][char] != '+':
                     condition = False
                 else:
                     pass
-                inc -= 1
-            if condition == True:
-                return True
-            else:
-                return False
+                char -= 1
+            return condition
         elif direction == 8:
+            # up-left
             condition = True
-            # checking up-left
             endChar = char - len(w) + 1
-            inc = char
-            while inc >= endChar:
-                if puzzle[line][inc] != '+':
+            while char >= endChar:
+                print("LINE: %s CHAR: %s = %s" % (line, char, self.puzzle[line][char]))
+                if self.puzzle[line][char] != '+':
                     condition = False
                 else:
                     pass
-                inc -= 1
+                char -= 1
                 line -= 1
-            if condition == True:
-                return True
-            else:
-                return False
+            return condition
+        else:
+            pass
