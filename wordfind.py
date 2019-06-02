@@ -51,6 +51,27 @@ class Wordfind(object):
         for line in p:
             print(line)
 
+    # pick random direction
+    def pickDirection(self):
+        d = random.randint(1,8)
+        return d
+    
+    # pick random line/char combo
+    # this function will keep searching until it finds a clear space, use wisely
+    def pickLocation(self):
+        r_line = random.randint(0,14)
+        r_char = random.randint(0,14)
+        if self.puzzle[r_line][r_char] == '+':
+            # found a good spot
+            return r_line, r_char
+        else:
+            while self.puzzle[r_line][r_char] != '+':
+                r_line = random.randint(0,14)
+                r_char = random.randint(0,14)
+
+            # now lets return
+            return r_line, r_char
+
     # put a word into the field, this function checks nothing at all!
     def putWord(self, w, direction, line, char):
         if direction == 1:
@@ -153,7 +174,7 @@ class Wordfind(object):
             print("definitely cant do anything here")
 
     # check a single line/char location for presence of existing characters or empty marker
-    def checkLocation(w, line, char):
+    def checkLocation(self, line, char):
         if puzzle[line][char] == "+":
             # valid place to put a character, nothing there yet
             return True
@@ -229,45 +250,7 @@ class Wordfind(object):
 
     # find specific character(s) of intersection
     def checkWordOverlap(self, w, direction, line, char):
-        # we will only work with a left search for now
-        if direction == 3:
-            condition = False
-            # lets look right for intersects
-            endChar = char + len(w) + 1
-            if endChar > 14:
-                return False
-            else:
-                inc = char
-                i = 0
-                while inc <= endChar:
-                    if self.puzzle[line][inc] != '+':
-                        # somethign here, cant place character
-                        #condition = False
-                        # we need to first determine the overlaps
-                        #print(line, inc)
-                        #print(puzzle[line][inc])
-                        #print(w[i])
-                        condition = True
-                        """
-                        if puzzle[line][inc] == w[inc - char + 1]:
-                            print("line: %s char :%s"% (line, inc)) 
-                            print(puzzle[line][inc],w[i])
-                        else:
-                            # no match found
-                            print("no match found on overlap")
-                            print("line: %s char :%s"% (line, inc)) 
-                            print(puzzle[line][inc],w[inc - char + 1])
-                        """  
-                    else:
-                        # nothing here, leave condition alone for now
-                        pass
-                    inc += 1
-                    i += 1
-            if condition == True:
-                return True
-            else:
-                return False
-
+        pass # nothing to do right now, this needs to be fleshed out
     
     # returns False if there is a word intersection, True if there is NOT
 

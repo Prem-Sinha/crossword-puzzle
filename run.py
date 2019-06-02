@@ -18,9 +18,41 @@ wf.putWord('ROOK',8,9,3)
 
 #print(wf.checkWordOverlap('CAT',3,0,4))
 
-print(wf.checkWordIntersect('DO', 8, 14, 4))
+if wf.checkWordIntersect('DOG', 3, 12, 12) == False:
+    # this incidates there is an intersection
+    print("check for overlap")
 
+new_words = ['BEEP','BOOP','NOSE','WIND']
 #print(wf.puzzle[4][0])
 #print(wf.puzzle[4][1])
 #print(wf.puzzle[4][2])
 #print(wf.puzzle[4][3])
+#r_line, r_char = wf.pickLocation()
+
+wf.printCleanGrid(wf.puzzle)
+print("begin word insertion")
+
+for word in new_words:
+    # lets get a direction and a location
+    r_line, r_char = wf.pickLocation()
+    r_direction = wf.pickDirection()
+
+    # time for a bounds check
+    if wf.checkWord(word, r_direction, r_line, r_char) == True:
+        # True incidates word will fit!
+
+        # now we need to check intersection
+        if wf.checkWordIntersect(word, r_direction, r_line, r_char) == True:
+            # no intersection found, we can safely place the word!
+            #wf.putWord('ROOK',8,9,3)
+            wf.putWord(word, r_direction, r_line, r_char)
+            print("successfully placed %s" % word)
+        else:
+            # word intersection found, need to check further
+            pass
+    else:
+        # False indicates it will go out of bounds
+        pass
+
+print("word insertion phase complete")
+wf.printCleanGrid(wf.puzzle)
