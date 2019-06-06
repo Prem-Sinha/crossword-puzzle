@@ -168,10 +168,10 @@ class Wordfind(object):
 
     # check a single line/char location for presence of existing characters or empty marker
     def checkLocation(self, line, char):
-        if puzzle[line][char] == "+":
+        if self.puzzle[line][char] == "+":
             # valid place to put a character, nothing there yet
             return True
-        elif puzzle[line][char] != "+":
+        elif self.puzzle[line][char] != "+":
             # not valid, there is already a character there
             return False
         else:
@@ -186,7 +186,7 @@ class Wordfind(object):
         #
         if direction == 1:
             # up
-            return not( line <= len(w))
+            return not(line <= len(w))
                 #returned False:
                 #print("will go out of bounds")
                 #print("word: %s, direction: up, line: %s, char: %s" % (w, line, char))
@@ -215,6 +215,7 @@ class Wordfind(object):
             # up-left
             return not(line - len(w) < 0 or char - len(w) < 0)
         else:
+            pass
             # this should never happen
             #return False
     
