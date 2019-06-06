@@ -186,59 +186,37 @@ class Wordfind(object):
         #
         if direction == 1:
             # up
-            if line <= len(w):
-                return False
+            return not( line <= len(w))
+                #returned False:
                 #print("will go out of bounds")
                 #print("word: %s, direction: up, line: %s, char: %s" % (w, line, char))
-            else:
-                return True
+                #returned True:
                 #print("shouldn't go out of bounds")
                 #print("word: %s, direction: up, line: %s, char: %s" % (w, line, char))
         elif direction == 2:
             # up-right
-            if line - len(w) <= 0 or char + len(w) > 14:
-                return False
-            else:
-                return True
+            return not(line - len(w) <= 0 or char + len(w) > 14)
         elif direction == 3:
             # right
-            if char + len(w) > 14:
-                return False
-            else:
-                return True
+            return not(char + len(w) > 14)
         elif direction == 4:
             # down-right
-            if line + len(w) > 14 or char + len(w) > 14:
-                return False
-            else:
-                return True
+            return not(line + len(w) > 14 or char + len(w) > 14)
         elif direction == 5:
             # down
-            if line + len(w) > 14:
-                return False
-            else:
-                return True
+            return not(line + len(w) > 14)
         elif direction == 6:
             # down-left
-            if line + len(w) > 14 or char - len(w) < 0:
-                return False
-            else:
-                return True
+            return not(line + len(w) > 14 or char - len(w) < 0)
         elif direction == 7:
             # left
-            if char - len(w) < 0:
-                return False
-            else:
-                return True
+            return not(char - len(w) < 0)
         elif direction == 8:
             # up-left
-            if line - len(w) < 0 or char - len(w) < 0:
-                return False
-            else:
-                return True
+            return not(line - len(w) < 0 or char - len(w) < 0)
         else:
             # this should never happen
-            return False
+            #return False
     
 
     # find specific character(s) of intersection
@@ -346,7 +324,7 @@ class Wordfind(object):
             condition = True
             endChar = char - len(w) + 1
             while char >= endChar:
-                print("LINE: %s CHAR: %s = %s" % (line, char, self.puzzle[line][char]))
+                #print("LINE: %s CHAR: %s = %s" % (line, char, self.puzzle[line][char]))
                 if self.puzzle[line][char] != '+':
                     condition = False
                 else:

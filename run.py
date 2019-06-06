@@ -30,7 +30,7 @@ new_words = ['BEEP','BOOP','NOSE','WIND']
 #r_line, r_char = wf.pickLocation()
 
 wf.printCleanGrid(wf.puzzle)
-print("begin word insertion")
+print("Begin Word insertion")
 
 for word in new_words:
     # lets get a direction and a location
@@ -38,15 +38,15 @@ for word in new_words:
     r_direction = wf.pickDirection()
 
     # time for a bounds check
-    if wf.checkWord(word, r_direction, r_line, r_char) == True:
-        # True incidates word will fit!
+    if wf.checkWord(word, r_direction, r_line, r_char):
+        # True indicates word will fit!
 
         # now we need to check intersection
-        if wf.checkWordIntersect(word, r_direction, r_line, r_char) == True:
+        if wf.checkWordIntersect(word, r_direction, r_line, r_char):
             # no intersection found, we can safely place the word!
             #wf.putWord('ROOK',8,9,3)
             wf.putWord(word, r_direction, r_line, r_char)
-            print("successfully placed %s" % word)
+            print("Successfully placed %s" % word)
         else:
             # word intersection found, need to check further
             pass
@@ -54,5 +54,5 @@ for word in new_words:
         # False indicates it will go out of bounds
         pass
 
-print("word insertion phase complete")
+print("Word insertion phase Complete")
 wf.printCleanGrid(wf.puzzle)
