@@ -40,13 +40,6 @@ class Wordfind(object):
         return lines # perhaps a better return?
 
     # this prints out the puzzle
-    def printGrid(self, p):
-        i = 0;
-        for line in puzzle:
-            print("%s: %s"%(i, line))
-            i += 1
-
-    # this prints out the puzzle
     def printCleanGrid(self, p):
         for line in p:
             print(line)
