@@ -45,11 +45,27 @@ class Wordfind(object):
         for line in puzzle:
             print("%s: %s"%(i, line))
             i += 1
-
+    
     # this prints out the puzzle
     def printCleanGrid(self, p):
         for line in p:
             print(line)
+            
+    # pretty alternative print functions
+    def printCleanGrid_alt1(self, p):
+        for line in p:
+            for l in line:
+                print(l, end=' ')
+            print()
+    # pretty alternative print functions
+    def printCleanGrid_alt2(self, p):
+        for line in p:
+            for l in line:
+                print(l, end=' | ')
+            print()
+            for l in line:
+                print("--", end='--')
+            print()
 
     # pick random direction
     def pickDirection(self):
