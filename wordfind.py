@@ -30,17 +30,16 @@ class Wordfind(object):
     # this builds an empty grid
     def buildGrid(self, h, w):
         lines = []
-        for line in range(0,h):
+        for line in range(h):
             # we need to build a line, ya?
             l = []
-            for char in range(0,w):
+            for char in range(w):
                 l.append('+')
             lines.append(l)
         self.puzzle = lines
-        return lines # perhaps a better return?
+        #buildGrid affect self.puzzle; it doesn't need to return anything
 
     # this prints out the puzzle
-
     def printCleanGrid(self, p):
         for line in p:
             print(line)
