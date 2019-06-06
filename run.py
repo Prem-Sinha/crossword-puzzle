@@ -29,7 +29,7 @@ new_words = ['BEEP','BOOP','NOSE','WIND']
 #print(wf.puzzle[4][3])
 #r_line, r_char = wf.pickLocation()
 
-wf.printCleanGrid(wf.puzzle)
+wf.printCleanGrid_alt1(wf.puzzle)
 print("Begin Word insertion")
 
 for word in new_words:
@@ -55,4 +55,4 @@ for word in new_words:
         pass
 
 print("Word insertion phase Complete")
-wf.printCleanGrid(wf.puzzle)
+wf.printCleanGrid_alt1(wf.puzzle)
