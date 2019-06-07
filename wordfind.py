@@ -71,16 +71,16 @@ class Wordfind(object):
         r_line = random.randint(0,14)
         r_char = random.randint(0,14)
         if self.puzzle[r_line][r_char] == '+':
+            pass
             # found a good spot
-            return r_line, r_char
         else:
             while self.puzzle[r_line][r_char] != '+':
                 r_line = random.randint(0,14)
                 r_char = random.randint(0,14)
+    # now lets return
+        return r_line, r_char
 
-            # now lets return
-            return r_line, r_char
-
+    # alternate putWord 
     # A Much smaller function to put a word into the field
     # this one checks nothing, too!
     def putWordPlus(self, w, direction, line, char):
