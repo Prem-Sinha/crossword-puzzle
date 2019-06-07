@@ -81,6 +81,19 @@ class Wordfind(object):
             # now lets return
             return r_line, r_char
 
+    # A Much smaller function to put a word into the field
+    # this one checks nothing, too!
+    def putWordPlus(self, w, direction, line, char):
+        dirchange = [[],[0,-1],[1,-1],[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1]]
+        charchange = dirchange[direction][0]
+        linechange = dirchange[direction][1]
+        for ch in w:
+            self.puzzle[line][char] = ch
+            char += charchange
+            line += linechange
+    
+    # original putWord
+    '''
     # put a word into the field, this function checks nothing at all!
     def putWord(self, w, direction, line, char):
         if direction == 1:
@@ -149,7 +162,7 @@ class Wordfind(object):
                 char -= 1
                 line -= 1
                 c += 1
-
+    '''
     #unused function
     # this function picks a location for a word, hopefully smartly
     def placeWord(w, puzzle):
