@@ -47,11 +47,11 @@ for word in new_words:
             wf.putWord(word, r_direction, r_line, r_char)
             print("Successfully placed %s" % word)
         else:
+            print("Could not place %s" % word)
             # word intersection found, need to check further
-            pass
     else:
+        print("Could not place %s" % word)
         # False indicates it will go out of bounds
-        pass
 
 print("Word insertion phase Complete")
 wf.printCleanGrid_alt1(wf.puzzle)
