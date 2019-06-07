@@ -22,7 +22,11 @@ if wf.checkWordIntersect('DOG', 3, 12, 12) == False:
     # this incidates there is an intersection
     print("check for overlap")
 
-new_words = ['BEEP','BOOP','NOSE','WIND']
+NW = input("Enter more words: ")
+if NW:
+    new_words = NW.split()
+else:
+    new_words = ['BEEP','BOOP','NOSE','WIND']
 #print(wf.puzzle[4][0])
 #print(wf.puzzle[4][1])
 #print(wf.puzzle[4][2])
@@ -47,10 +51,10 @@ for word in new_words:
             wf.putWord(word, r_direction, r_line, r_char)
             print("Successfully placed %s" % word)
         else:
-            print("Could not place %s" % word)
+            print("Could not place %s (Intersect)" % word)
             # word intersection found, need to check further
     else:
-        print("Could not place %s" % word)
+        print("Could not place %s (Bounds)" % word)
         # False indicates it will go out of bounds
 
 print("Word insertion phase Complete")
