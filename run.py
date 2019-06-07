@@ -40,7 +40,6 @@ for word in new_words:
     # time for a bounds check
     if wf.checkWord(word, r_direction, r_line, r_char):
         # True indicates word will fit!
-
         # now we need to check intersection
         if wf.checkWordIntersect(word, r_direction, r_line, r_char):
             # no intersection found, we can safely place the word!

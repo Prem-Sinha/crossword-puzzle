@@ -150,6 +150,7 @@ class Wordfind(object):
                 line -= 1
                 c += 1
 
+    #unused function
     # this function picks a location for a word, hopefully smartly
     def placeWord(w, puzzle):
         # now we pick a direction for this word
@@ -182,17 +183,10 @@ class Wordfind(object):
         else:
             print("definitely cant do anything here")
 
+    #unused function
     # check a single line/char location for presence of existing characters or empty marker
     def checkLocation(self, line, char):
-        if self.puzzle[line][char] == "+":
-            # valid place to put a character, nothing there yet
-            return True
-        elif self.puzzle[line][char] != "+":
-            # not valid, there is already a character there
-            return False
-        else:
-            # this should probably never happen
-            pass
+        return (self.puzzle[line][char] == "+")
 
     # check if word will spill out of the bounds of the puzzle
     # returns True if word fits, False if it does not
