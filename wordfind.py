@@ -352,11 +352,14 @@ class Wordfind(object):
     #UNUSED FUNCTION
     # New function with shorter code. Returns intersecting characters
     def checkWordIntersectPlus(self, w, direction, line, char):
-        # returns False if something is blocking/intersecting
+        # Returns list of characters that are blocking/intersecting.
+        # If list is empty, it means there are no intersections
 
         # this function will not check if something would flow out of bounds
         # that needs to be done BEFORE using this function
-
+        
+        intersect = []
+        
         '''if direction == 1:
             # up
             endLine = line - len(w) + 1 # needs to be +1 instead of -1 for some reason?
@@ -373,7 +376,7 @@ class Wordfind(object):
             end = line - len(w)
             for inc in range(line, end, -1):
                 if self.puzzle[inc][char] != '+':
-                    return False
+                    intersect.append(self.puzzle[inc][char])
         elif direction == 2:
             # up-right
             endLine = line - len(w) - 1
@@ -450,5 +453,5 @@ class Wordfind(object):
                 line -= 1
         else:
             pass
-        return True
-        #True returned if no intersect found
+        return intersect
+        #False (empty list) returned if no intersect found
