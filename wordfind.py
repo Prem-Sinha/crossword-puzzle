@@ -250,9 +250,9 @@ class Wordfind(object):
     # find specific character(s) of intersection
     def checkWordOverlap(self, w, direction, line, char):
         pass # nothing to do right now, this needs to be fleshed out
-    
-    # returns False if there is a word intersection, True if there is NOT
 
+    #UNUSED FUNCTION    
+    # returns False if there is a word intersection, True if there is NOT
     def checkWordIntersect(self, w, direction, line, char):
         # returns False if something is blocking/intersecting
 
@@ -349,109 +349,24 @@ class Wordfind(object):
         return True
         #True returned if no intersect found
         
-    #UNUSED FUNCTION
     # New function with shorter code. Returns intersecting characters
+    # Also allows overlap if the same letter is repeated
     def checkWordIntersectPlus(self, w, direction, line, char):
         # Returns list of characters that are blocking/intersecting.
         # If list is empty, it means there are no intersections
 
         # this function will not check if something would flow out of bounds
         # that needs to be done BEFORE using this function
-        
-        intersect = []
-        
-        '''if direction == 1:
-            # up
-            endLine = line - len(w) + 1 # needs to be +1 instead of -1 for some reason?
-            inc = line
-            while inc >= endLine:
-                if self.puzzle[inc][char] != '+':
-                    return False
-                #False returned immediately on encountering intersect
-                else:
-                    pass
-                inc -= 1'''
-        if direction == 1:
-            # up
-            end = line - len(w)
-            for inc in range(line, end, -1):
-                if self.puzzle[inc][char] != '+':
-                    intersect.append(self.puzzle[inc][char])
-        elif direction == 2:
-            # up-right
-            endLine = line - len(w) - 1
-            inc = line
-            while inc >= endLine:
-                if self.puzzle[inc][char] != '+':
-                    return False
-                else:
-                    pass
-                inc -= 1
-                char += 1
-        elif direction == 3:
-            # right
-            endChar = char + len(w) - 1
-            inc = char
-            while inc <= endChar:
-                if self.puzzle[line][inc] != '+':
-                    # something here, cant place a character
-                    return False
-                else:
-                    # nothing here, we are good
-                    pass
-                inc += 1
-        elif direction == 4:
-            # down-right
-            endChar = char + len(w) - 1
-            inc = char
-            while inc <= endChar:
-                if self.puzzle[line][inc] != '+':
-                    return False
-                else:
-                    pass
-                inc += 1
-                line += 1
-        elif direction == 5:
-            # down
-            endLine = line + len(w) - 1
-            inc = line
-            while inc <= endLine:
-                if self.puzzle[inc][char] != '+':
-                    return False
-                else:
-                    pass
-                inc += 1
-        elif direction == 6:
-            # down-left
-            endLine = line + len(w) - 1
-            while line <= endLine:
-                if self.puzzle[line][char] != '+':
-                    return False
-                else:
-                    pass
-                line += 1
-                char -= 1
-        elif direction == 7:
-            # left
-            endChar = char - len(w) + 1
-            while char >= endChar:
-                if self.puzzle[line][char] != '+':
-                    return False
-                else:
-                    pass
-                char -= 1
-        elif direction == 8:
-            # up-left
-            endChar = char - len(w) + 1
-            while char >= endChar:
-                #print("LINE: %s CHAR: %s = %s" % (line, char, self.puzzle[line][char]))
-                if self.puzzle[line][char] != '+':
-                    return False
-                else:
-                    pass
-                char -= 1
-                line -= 1
-        else:
-            pass
+        intersect = {}
+        dirchange = [[],[0,-1],[1,-1],[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1]]
+        charchange = dirchange[direction][0]
+        linechange = dirchange[direction][1]
+        for ch in w:
+            prev = self.puzzle[line][char]
+            if prev!= '+' and prev != ch:
+                intersect[(line,char)] = prev
+            char += charchange
+            line += linechange
         return intersect
         #False (empty list) returned if no intersect found
+

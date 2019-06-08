@@ -45,13 +45,15 @@ for word in new_words:
     if wf.checkWord(word, r_direction, r_line, r_char):
         # True indicates word will fit!
         # now we need to check intersection
-        if wf.checkWordIntersect(word, r_direction, r_line, r_char):
+        WordIntersect = wf.checkWordIntersectPlus(word, r_direction, r_line, r_char)
+        if not WordIntersect:
             # no intersection found, we can safely place the word!
             #wf.putWordPlus('ROOK',8,9,3)
             wf.putWordPlus(word, r_direction, r_line, r_char)
             print("Successfully placed %s" % word)
         else:
             print("Could not place %s (Intersect)" % word)
+            print("Blocking characters:", WordIntersect)
             # word intersection found, need to check further
     else:
         print("Could not place %s (Bounds)" % word)
