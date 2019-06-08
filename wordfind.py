@@ -13,7 +13,7 @@ __status__ = "In Development"
 
 
 import random
-
+import string
 """
 this is the direction mapping
 
@@ -40,12 +40,10 @@ class Wordfind(object):
         return lines # perhaps a better return?
 
     # this prints out the puzzle
-    def printGrid(self, p):
-        i = 0;
-        for line in puzzle:
-            print("%s: %s"%(i, line))
-            i += 1
-
+    def printGrid(self):
+        for line in self.puzzle:
+            print(*line, sep = "  ") 
+                
     # this prints out the puzzle
     def printCleanGrid(self, p):
         for line in p:
@@ -93,10 +91,15 @@ class Wordfind(object):
         elif direction == 3:
             # flowing word to the right, line will not change
             c = 0
-            while char <= len(w) + 1:
+            for ch in w:
+                self.puzzle[line][char] = w[c]
+                c += 1
+            """
+            while char <= len(w) + 2: # not quite sure why +2 is necessary here but it seems to be
                 self.puzzle[line][char] = w[c]
                 char += 1
                 c += 1
+            """
         elif direction == 4:
             # flowing down-right
             # char increases, line increases
@@ -154,7 +157,7 @@ class Wordfind(object):
         rChar = random.randint(0,14)
         if puzzle[rLine][rChar] == "+":
             # free space, lets do it
-            print("good to go, no character placed here yet")
+            #print("good to go, no character placed here yet")
             if checkWord(w, direction, rLine, rChar) == True and checkWordIntersect(w, direction, rLine, rChar) ==  True:
                 if direction == 1:
                     # lets insert a word upwards
@@ -173,6 +176,40 @@ class Wordfind(object):
         else:
             print("definitely cant do anything here")
 
+    # bulk place takes a list of words and insertifies them
+    def bulkPlace(self, wordlist):
+        while(len(wordlist) != 0):
+            r_line, r_char = self.pickLocation()
+            r_direction = self.pickDirection()
+            r_word = random.randint(0,len(wordlist) - 1)
+            # bounds check time
+            #print("PROCESSING: %s" % wordlist[r_word])
+            #print("r_direction: %s r_line: %s r_char %s" % (r_direction, r_line, r_char))
+            if self.checkWord(wordlist[r_word], r_direction, r_line, r_char) == True:
+                # true incidates the word fits
+                if self.checkWordIntersect(wordlist[r_word], r_direction, r_line, r_char) == True:
+                    # true here indicates no intersections detected!
+                    self.putWord(wordlist[r_word], r_direction, r_line, r_char)
+                    #print("successfully placed %s" % wordlist[r_word])
+                    wordlist.remove(wordlist[r_word])
+                else:
+                    pass
+            else:
+                # false here indicates out of bounds word 
+                pass
+        
+    # fill in the empty stuff
+    def fillPuzzle(self):
+        size = len(self.puzzle)
+        for line in range(0,size):
+            for char in range(0,size):
+                if self.puzzle[line][char] == '+':
+                    # we need to replace
+                    self.puzzle[line][char] = random.choice(string.ascii_uppercase) 
+                else:
+                    # nothing to replace
+                    pass
+        
     # check a single line/char location for presence of existing characters or empty marker
     def checkLocation(self, line, char):
         if puzzle[line][char] == "+":
@@ -274,15 +311,15 @@ class Wordfind(object):
             return condition
         elif direction == 2:
             # up-right
+            # char increases, line decreases
             condition = True
-            endLine = line - len(w) - 1
-            inc = line
-            while inc >= endLine:
-                if self.puzzle[inc][char] != '+':
+             
+            for ch in w:
+                if self.puzzle[line][char] != '+':
                     condition = False
                 else:
                     pass
-                inc -= 1
+                line -= 1
                 char += 1
             return condition
         elif direction == 3:
@@ -353,7 +390,7 @@ class Wordfind(object):
             condition = True
             endChar = char - len(w) + 1
             while char >= endChar:
-                print("LINE: %s CHAR: %s = %s" % (line, char, self.puzzle[line][char]))
+                #print("LINE: %s CHAR: %s = %s" % (line, char, self.puzzle[line][char]))
                 if self.puzzle[line][char] != '+':
                     condition = False
                 else:
