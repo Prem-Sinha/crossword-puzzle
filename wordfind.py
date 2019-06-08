@@ -352,8 +352,8 @@ class Wordfind(object):
     # New function with shorter code. Returns intersecting characters
     # Also allows overlap if the same letter is repeated
     def checkWordIntersectPlus(self, w, direction, line, char):
-        # Returns list of characters that are blocking/intersecting.
-        # If list is empty, it means there are no intersections
+        # Returns dictionary of characters that are blocking/intersecting.
+        # If dictionary is empty, it means there are no intersections
 
         # this function will not check if something would flow out of bounds
         # that needs to be done BEFORE using this function
@@ -368,5 +368,5 @@ class Wordfind(object):
             char += charchange
             line += linechange
         return intersect
-        #False (empty list) returned if no intersect found
+        #False (empty dictionary) returned if no intersect found
 
