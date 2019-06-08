@@ -14,13 +14,14 @@ wf.putWordPlus('BOAT',6,0,12)
 wf.putWordPlus('BOTTOM',7,14,12)
 wf.putWordPlus('ROOK',8,9,3)
 
+'''
 #print(wf.printCleanGrid(wf.puzzle))
 
 #print(wf.checkWordOverlap('CAT',3,0,4))
 
 if wf.checkWordIntersect('DOG', 3, 12, 12) == False:
     # this incidates there is an intersection
-    print("check for overlap")
+    print("check for overlap")'''
 
 NW = input("Enter more words: ")
 if NW:
@@ -60,4 +61,8 @@ for word in new_words:
         # False indicates it will go out of bounds
 
 print("Word insertion phase Complete")
+wf.printCleanGrid_alt1(wf.puzzle)
+
+print("\nGrid filled with letters")
+wf.fillPuzzle()
 wf.printCleanGrid_alt1(wf.puzzle)

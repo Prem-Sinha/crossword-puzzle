@@ -97,7 +97,7 @@ class Wordfind(object):
     #there is no direction 0.
     
     # original putWord
-    # UNUSED FUNCTION
+    #UNUSED FUNCTION
     # put a word into the field, this function checks nothing at all!
     def putWord(self, w, direction, line, char):
         if direction == 1:
@@ -369,7 +369,8 @@ class Wordfind(object):
             line += linechange
         return intersect
         #False (empty dictionary) returned if no intersect found
-
+    
+    #UNUSED FUNCTION
     # bulk place takes a list of words and insertifies them
     def bulkPlace(self, wordlist):
         for word in wordlist:
@@ -393,6 +394,8 @@ class Wordfind(object):
                 # false here indicates out of bounds word 
         
     # fill in the empty stuff
+    # This function does not check for the unintentional
+    # addition of other, valid words.
     def fillPuzzle(self):
         size = len(self.puzzle)
         for line in range(size):
