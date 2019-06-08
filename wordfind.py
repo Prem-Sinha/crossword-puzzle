@@ -88,7 +88,7 @@ class Wordfind(object):
         charchange = dirchange[direction][0]
         linechange = dirchange[direction][1]
         for ch in w:
-            self.puzzle[line][char] = ch
+            self.puzzle[line][char] = ch.upper()
             char += charchange
             line += linechange
     #The list contains lists explaining how much to change
@@ -370,3 +370,33 @@ class Wordfind(object):
         return intersect
         #False (empty dictionary) returned if no intersect found
 
+    # bulk place takes a list of words and insertifies them
+    def bulkPlace(self, wordlist):
+        for word in wordlist:
+            r_line, r_char = self.pickLocation()
+            r_direction = self.pickDirection()
+            # bounds check time
+            #print("PROCESSING: %s" % wordlist[r_word])
+            #print("r_direction: %s r_line: %s r_char %s" % (r_direction, r_line, r_char))
+            if self.checkWord(word, r_direction, r_line, r_char):
+                # true incidates the word fits
+                WordIntersect = self.checkWordIntersectPlus(word, r_direction, r_line, r_char)
+                if not WordIntersect:
+                    # true here (false WordIntersect) indicates no intersections detected!
+                    self.putWord(word, r_direction, r_line, r_char)
+                    #print("successfully placed %s" % wordlist[r_word])
+                else:
+                    print("Could not place %s (Intersect)" % word)
+                    print("Blocking characters:", WordIntersect)
+            else:
+                print("Could not place %s (Bounds)" % word)
+                # false here indicates out of bounds word 
+        
+    # fill in the empty stuff
+    def fillPuzzle(self):
+        size = len(self.puzzle)
+        for line in range(size):
+            for char in range(size):
+                if self.puzzle[line][char] == '+':
+                    # we need to replace
+                    self.puzzle[line][char] = chr(random.randint(65, 90))
