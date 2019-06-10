@@ -42,20 +42,20 @@ class Wordfind(object):
         # buildGrid affect self.puzzle; it doesn't need to return anything
 
     # this prints out the puzzle
-    def printCleanGrid(self, p):
-        for line in p:
+    def printCleanGrid(self):
+        for line in self.puzzle:
             print(line)
 
     # pretty alternative print functions
-    def printCleanGrid_alt1(self, p):
-        for line in p:
+    def printCleanGrid_alt1(self):
+        for line in self.puzzle:
             for l in line:
                 print(l, end=' ')
             print()
 
     # pretty alternative print functions
-    def printCleanGrid_alt2(self, p):
-        for line in p:
+    def printCleanGrid_alt2(self):
+        for line in self.puzzle:
             for l in line:
                 print(l, end=' | ')
             print()
@@ -65,8 +65,7 @@ class Wordfind(object):
 
     # pick random direction
     def pickDirection(self):
-        d = random.randint(1, 8)
-        return d
+        return random.randint(1, 8)
 
     # pick random line/char combo
     # this function will keep searching until it finds a clear space, use wisely
