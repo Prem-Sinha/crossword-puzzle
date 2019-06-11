@@ -52,4 +52,3 @@ wf.printCleanGrid_alt1()
 print("\nGrid filled with letters")
 wf.fillPuzzle()
 wf.printCleanGrid_alt1()
-

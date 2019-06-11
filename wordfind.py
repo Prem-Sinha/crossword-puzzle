@@ -59,7 +59,7 @@ class Wordfind(object):
             for l in line:
                 print(l, end=' | ')
             print()
-            for l in line:
+            for _ in line:
                 print("--", end='--')
             print()
 
@@ -176,15 +176,15 @@ class Wordfind(object):
             r_line, r_char = self.pickLocation()
             r_direction = self.pickDirection()
             # bounds check time
-            #print("PROCESSING: %s" % wordlist[r_word])
-            #print("r_direction: %s r_line: %s r_char %s" % (r_direction, r_line, r_char))
+            # print("PROCESSING: %s" % wordlist[r_word])
+            # print("r_direction: %s r_line: %s r_char %s" % (r_direction, r_line, r_char))
             if self.checkWord(word, r_direction, r_line, r_char):
                 # true incidates the word fits
                 WordIntersect = self.checkWordIntersectPlus(word, r_direction, r_line, r_char)
                 if not WordIntersect:
                     # true here (false WordIntersect) indicates no intersections detected!
-                    self.putWord(word, r_direction, r_line, r_char)
-                    #print("successfully placed %s" % wordlist[r_word])
+                    self.putWordPlus(word, r_direction, r_line, r_char)
+                    # print("successfully placed %s" % wordlist[r_word])
                 else:
                     print("Could not place %s (Intersect)" % word)
                     print("Blocking characters:", WordIntersect)
