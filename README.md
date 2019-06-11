@@ -1,6 +1,6 @@
 # wordfind
 
-A project to generate crossword puzzles using Python.
+A project to generate word search puzzles using Python.
 The project currently consists of one file, wordfind.py, containing the Wordfind class, and another file, run.py, meant to run the functions in the class to generate a puzzle.
 
 The class contains functions that can
