@@ -201,3 +201,8 @@ class Wordfind(object):
                 if self.puzzle[line][char] == '+':
                     # we need to replace
                     self.puzzle[line][char] = chr(random.randint(65, 90))
+
+    # function to search for words and solve puzzle
+    # will be later used to ensure the absence of unwanted words
+    def searcher(self):
+        pass
