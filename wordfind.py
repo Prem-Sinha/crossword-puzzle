@@ -27,9 +27,12 @@ this is the direction mapping
 class Wordfind(object):
 
     puzzle = ''
+    size = ()
+    words = set()
 
     # this builds an empty grid
     def buildGrid(self, h, w):
+        self.size = (h, w)
         lines = []
         for l in range(h):
             # we need to build a line, ya?
@@ -85,16 +88,18 @@ class Wordfind(object):
     # A Much smaller function to put a word into the field
     # this one checks nothing, too!
     def putWordPlus(self, w, direction, line, char):
-        dirchange = [[], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
-        charchange = dirchange[direction][0]
-        linechange = dirchange[direction][1]
-        for ch in w:
-            self.puzzle[line][char] = ch.upper()
-            char += charchange
-            line += linechange
+        if w not in self.words:
+            self.words.add(w.upper())
+            dirchange = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
+            char_change = dirchange[direction-1][0]
+            line_change = dirchange[direction-1][1]
+            for ch in w:
+                self.puzzle[line][char] = ch.upper()
+                char += char_change
+                line += line_change
     # The list contains lists explaining how much to change
     # char and list by for each direction.
-    # The first element is a blank list beacuse
+    # The first element is a blank list because
     # there is no direction 0.
 
     # UNUSED FUNCTION
@@ -143,10 +148,6 @@ class Wordfind(object):
             # this should never happen
             # return False
 
-    # find specific character(s) of intersection
-    def checkWordOverlap(self, w, direction, line, char):
-        pass  # nothing to do right now, this needs to be fleshed out
-
     # New function with shorter code. Returns intersecting characters
     # Also allows overlap if the same letter is repeated
     def checkWordIntersectPlus(self, w, direction, line, char):
@@ -156,15 +157,15 @@ class Wordfind(object):
         # this function will not check if something would flow out of bounds
         # that needs to be done BEFORE using this function
         intersect = {}
-        dirchange = [[], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
-        charchange = dirchange[direction][0]
-        linechange = dirchange[direction][1]
+        dirchange = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
+        char_change = dirchange[direction-1][0]
+        line_change = dirchange[direction-1][1]
         for ch in w:
             prev = self.puzzle[line][char]
             if prev != '+' and prev != ch:
                 intersect[(line, char)] = prev
-            char += charchange
-            line += linechange
+            char += char_change
+            line += line_change
         return intersect
         # False (empty dictionary) returned if no intersect found
 
@@ -178,15 +179,15 @@ class Wordfind(object):
             # print("PROCESSING: %s" % wordlist[r_word])
             # print("r_direction: %s r_line: %s r_char %s" % (r_direction, r_line, r_char))
             if self.checkWord(word, r_direction, r_line, r_char):
-                # true incidates the word fits
-                WordIntersect = self.checkWordIntersectPlus(word, r_direction, r_line, r_char)
-                if not WordIntersect:
-                    # true here (false WordIntersect) indicates no intersections detected!
+                # true indicates the word fits
+                word_intersect = self.checkWordIntersectPlus(word, r_direction, r_line, r_char)
+                if not word_intersect:
+                    # true here (false word_intersect) indicates no intersections detected!
                     self.putWordPlus(word, r_direction, r_line, r_char)
                     # print("successfully placed %s" % wordlist[r_word])
                 else:
                     print("Could not place %s (Intersect)" % word)
-                    print("Blocking characters:", WordIntersect)
+                    print("Blocking characters:", word_intersect)
             else:
                 print("Could not place %s (Bounds)" % word)
                 # false here indicates out of bounds word 
@@ -195,14 +196,41 @@ class Wordfind(object):
     # This function does not check for the unintentional
     # addition of other, valid words.
     def fillPuzzle(self):
-        size = len(self.puzzle)
-        for line in range(size):
-            for char in range(size):
+        for line in range(self.size[0]):
+            for char in range(self.size[1]):
                 if self.puzzle[line][char] == '+':
                     # we need to replace
                     self.puzzle[line][char] = chr(random.randint(65, 90))
 
     # function to search for words and solve puzzle
     # will be later used to ensure the absence of unwanted words
-    def searcher(self):
-        pass
+    def searcher(self, v=False):
+        dirchange = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
+        # check over grid first or words first?
+        if v: print(f"Words to find:\n{self.words}")
+        first_letters = set(i[0] for i in self.words)
+        if v: print(first_letters)
+        for line in range(self.size[0]):
+            for char in range(self.size[1]):
+                if v: print("Initial position", line, char)
+                if self.puzzle[line][char] in first_letters:
+                    for w in self.words:
+                        if v: print("Possibility of", w)
+                        if self.puzzle[line][char] == w[0]:
+                            for d in range(1, 9):
+                                if v: print("Direction, first letter", d, w[0])
+                                if self.checkWord(w, d, line, char):
+                                    fit = True
+                                    char_change = dirchange[d - 1][0]
+                                    line_change = dirchange[d - 1][1]
+                                    line_2 = line + line_change
+                                    char_2 = char + char_change
+                                    for i in range(1, len(w)):
+                                        if v: print("Letter and number, position to be checked", w[i], i, line_2, char_2)
+                                        if self.puzzle[line_2][char_2] != w[i]:
+                                            fit = False
+                                            break
+                                        char_2 += char_change
+                                        line_2 += line_change
+                                    if fit:
+                                        print(f"\t{w} was found at ({line}, {char}).")
