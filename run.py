@@ -56,4 +56,4 @@ wf.fillPuzzle()
 wf.printCleanGrid_alt1()
 
 print("Running searcher function to solve puzzle.")
-wf.searcher()
+wf.searcher(v=True)

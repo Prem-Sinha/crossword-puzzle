@@ -28,7 +28,7 @@ class Wordfind(object):
 
     puzzle = ''
     size = ()
-    words = set()
+    words = []
 
     # this builds an empty grid
     def buildGrid(self, h, w):
@@ -89,7 +89,7 @@ class Wordfind(object):
     # this one checks nothing, too!
     def putWordPlus(self, w, direction, line, char):
         if w not in self.words:
-            self.words.add(w.upper())
+            self.words.append(w.upper())
             dirchange = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
             char_change = dirchange[direction-1][0]
             line_change = dirchange[direction-1][1]
@@ -205,43 +205,46 @@ class Wordfind(object):
     # function to search for words and solve puzzle
     # will be later used to ensure the absence of unwanted words
     def searcher(self, v=False):
-        found = []
-        found_words = list(self.words)
-        w_r = ''
         dirchange = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
-        if v: print(f"Words to find:\n{found_words}")
-        first_letters = set(i[0] for i in self.words)
-        if v: print(first_letters)
+        found = []
+        f_words = dict()
+        for i in self.words:
+            f_words[i[0]] = f_words.get(i[0], list()) + [i]
+        if v:
+            print(f"Words to find:\n{f_words}")
+            print(f_words)
         for line in range(self.size[0]):
             for char in range(self.size[1]):
-                fit = False
                 if v: print("Initial position", line, char)
-                if self.puzzle[line][char] in first_letters:
-                    for w in found_words:
+                pos = self.puzzle[line][char]
+                w_r = []
+                if pos in f_words:
+                    for w in f_words[pos]:
                         if v: print("Possibility of", w)
-                        if self.puzzle[line][char] == w[0]:
-                            for d in range(1, 9):
-                                if v: print("Direction, first letter", d, w[0])
-                                if self.checkWord(w, d, line, char):
-                                    fit = True
-                                    char_change = dirchange[d - 1][0]
-                                    line_change = dirchange[d - 1][1]
-                                    line_2 = line + line_change
-                                    char_2 = char + char_change
-                                    for i in range(1, len(w)):
-                                        if v: print("Letter and number, position to be checked", w[i], i, line_2, char_2)
-                                        if self.puzzle[line_2][char_2] != w[i]:
-                                            fit = False
-                                            break
-                                        char_2 += char_change
-                                        line_2 += line_change
-                                    if fit:
-                                        print(f"\t{w} was found at ({line}, {char}).")
-                                        found.append(w)
-                                        w_r = w
+                        for d in range(1, 9):
+                            if v: print("Direction, first letter", d, w[0])
+                            if self.checkWord(w, d, line, char):
+                                fit = True
+                                char_change = dirchange[d - 1][0]
+                                line_change = dirchange[d - 1][1]
+                                line_2 = line + line_change
+                                char_2 = char + char_change
+                                for i in range(1, len(w)):
+                                    if v: print("Letter and number, position to be checked", w[i], i, line_2, char_2)
+                                    if self.puzzle[line_2][char_2] != w[i]:
+                                        fit = False
                                         break
-                if fit:
-                    found_words.remove(w_r)
+                                    char_2 += char_change
+                                    line_2 += line_change
+                                if fit:
+                                    print(f"\t{w} was found at ({line}, {char}).")
+                                    found.append(w)
+                                    w_r.append(w)
+                                    if v: print(w_r)
+                                    break
+                    if w_r:
+                        f_words[pos] = [i for i in f_words[pos] if i not in w_r]
+                        if v: print(f_words)
         if v: print(self.words, "\n", found)
-        if set(found) == self.words:
-            print("All words found successfully.")
+        if set(found) == set(self.words):
+            print("All words were found successfully.")
