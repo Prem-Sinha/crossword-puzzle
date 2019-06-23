@@ -115,7 +115,7 @@ class Wordfind(object):
         #
         if direction == 1:
             # up
-            return not(line <= len(w))
+            return line + 1 >= len(w)
             # returned False:
             # print("will go out of bounds")
             # print("word: %s, direction: up, line: %s, char: %s" % (w, line, char))
@@ -124,25 +124,25 @@ class Wordfind(object):
             # print("word: %s, direction: up, line: %s, char: %s" % (w, line, char))
         elif direction == 2:
             # up-right
-            return not(line - len(w) <= 0 or char + len(w) > 14)
+            return line + 1 >= len(w) and self.size[1] - char >= len(w)
         elif direction == 3:
             # right
-            return not(char + len(w) > 14)
+            return self.size[1] - char >= len(w)
         elif direction == 4:
             # down-right
-            return not(line + len(w) > 14 or char + len(w) > 14)
+            return self.size[0] - line >= len(w) and self.size[1] - char >= len(w)
         elif direction == 5:
             # down
-            return not(line + len(w) > 14)
+            return self.size[0] - line >= len(w)
         elif direction == 6:
             # down-left
-            return not(line + len(w) > 14 or char - len(w) < 0)
+            return self.size[0] - line >= len(w) and char + 1 >= len(w)
         elif direction == 7:
             # left
-            return not(char - len(w) < 0)
+            return char + 1 >= len(w)
         elif direction == 8:
             # up-left
-            return not(line - len(w) < 0 or char - len(w) < 0)
+            return line + 1 >= len(w) and char + 1 >= len(w)
         else:
             pass
             # this should never happen
@@ -205,19 +205,28 @@ class Wordfind(object):
     # function to search for words and solve puzzle
     # will be later used to ensure the absence of unwanted words
     def searcher(self, v=False):
+        found = []
+        found_words = list(self.words)
+        w_r = ''
         dirchange = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
         # check over grid first or words first?
-        if v: print(f"Words to find:\n{self.words}")
+        if v: print(f"Words to find:\n{found_words}")
         first_letters = set(i[0] for i in self.words)
         if v: print(first_letters)
         for line in range(self.size[0]):
             for char in range(self.size[1]):
+                fit = False
                 if v: print("Initial position", line, char)
                 if self.puzzle[line][char] in first_letters:
-                    for w in self.words:
+                    for w in found_words:
+                        if fit:
+                            found_words.remove(w_r)
+                            break
                         if v: print("Possibility of", w)
                         if self.puzzle[line][char] == w[0]:
                             for d in range(1, 9):
+                                if fit:
+                                    break
                                 if v: print("Direction, first letter", d, w[0])
                                 if self.checkWord(w, d, line, char):
                                     fit = True
@@ -234,3 +243,6 @@ class Wordfind(object):
                                         line_2 += line_change
                                     if fit:
                                         print(f"\t{w} was found at ({line}, {char}).")
+                                        found.append(w)
+                                        w_r = w
+        if v: print(self.words, "\n", found)
