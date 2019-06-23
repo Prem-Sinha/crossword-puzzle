@@ -13,6 +13,8 @@ wf.putWordPlus('TACO', 5, 0, 14)
 wf.putWordPlus('BOAT', 6, 0, 12)
 wf.putWordPlus('BOTTOM', 7, 14, 12)
 wf.putWordPlus('ROOK', 8, 9, 3)
+wf.putWordPlus('SPLIT', 6, 6, 7)
+wf.putWordPlus('SPREAD', 4, 6, 7)
 
 NW = input("Enter more words: ")
 if NW:

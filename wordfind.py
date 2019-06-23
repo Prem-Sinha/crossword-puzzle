@@ -209,7 +209,6 @@ class Wordfind(object):
         found_words = list(self.words)
         w_r = ''
         dirchange = [[0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]]
-        # check over grid first or words first?
         if v: print(f"Words to find:\n{found_words}")
         first_letters = set(i[0] for i in self.words)
         if v: print(first_letters)
@@ -219,14 +218,9 @@ class Wordfind(object):
                 if v: print("Initial position", line, char)
                 if self.puzzle[line][char] in first_letters:
                     for w in found_words:
-                        if fit:
-                            found_words.remove(w_r)
-                            break
                         if v: print("Possibility of", w)
                         if self.puzzle[line][char] == w[0]:
                             for d in range(1, 9):
-                                if fit:
-                                    break
                                 if v: print("Direction, first letter", d, w[0])
                                 if self.checkWord(w, d, line, char):
                                     fit = True
@@ -245,4 +239,9 @@ class Wordfind(object):
                                         print(f"\t{w} was found at ({line}, {char}).")
                                         found.append(w)
                                         w_r = w
+                                        break
+                if fit:
+                    found_words.remove(w_r)
         if v: print(self.words, "\n", found)
+        if set(found) == self.words:
+            print("All words found successfully.")
