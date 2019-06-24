@@ -7,12 +7,14 @@ wf.buildGrid(15, 15)
 
 wf.putWordPlus('BRAVO', 1, 5, 5)
 wf.putWordPlus('TOSS', 1, 14, 14)
-wf.putWordPlus('ROTE', 2, 14, 0)
+wf.putWordPlus('ROTE', 3, 14, 0)
 wf.putWordPlus('MITE', 4, 0, 0)
 wf.putWordPlus('TACO', 5, 0, 14)
 wf.putWordPlus('BOAT', 6, 0, 12)
 wf.putWordPlus('BOTTOM', 7, 14, 12)
 wf.putWordPlus('ROOK', 8, 9, 3)
+wf.putWordPlus('SPLIT', 6, 6, 7)
+wf.putWordPlus('SPREAD', 4, 6, 7)
 
 NW = input("Enter more words: ")
 if NW:
@@ -52,3 +54,6 @@ wf.printCleanGrid_alt1()
 print("\nGrid filled with letters")
 wf.fillPuzzle()
 wf.printCleanGrid_alt1()
+
+print("Running searcher function to solve puzzle.")
+wf.searcher(v=True)
