@@ -210,6 +210,8 @@ class Wordfind(object):
         f_words = dict()
         for i in self.words:
             f_words[i[0]] = f_words.get(i[0], list()) + [i]
+        for i in f_words:
+            f_words[i].sort(key=len, reverse=True)
         if v:
             print(f"Words to find:\n{f_words}")
             print(f_words)
@@ -237,7 +239,8 @@ class Wordfind(object):
                                     char_2 += char_change
                                     line_2 += line_change
                                 if fit:
-                                    print(f"\t{w} was found at ({line}, {char}).")
+                                    if v: print("----------", end="\t")
+                                    print(f"{w} was found at ({line}, {char}).")
                                     found.append(w)
                                     w_r.append(w)
                                     if v: print(w_r)
