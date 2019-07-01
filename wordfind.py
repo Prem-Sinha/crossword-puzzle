@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 
-""" wordfind.py: class for building wordfind puzzles """
+""" wordfind.py: class for building wordfind puzzles
+
+This is the direction mapping:
+8    1    2
+
+7    .    3
+
+6    5    4
+"""
 
 __author__ = "Drew Hynes"
 __copyright__ = "Copyright 2019"
@@ -13,22 +21,13 @@ __status__ = "In Development"
 
 import random
 
-"""
-this is the direction mapping
-
-8    1    2
-
-7    -    3
-
-6    5    4
-"""
-
 
 class Wordfind(object):
     def __init__(self, h=0, w=0):
         self.puzzle = ''
         self.size = ()
         self.words = []
+        self.cache = []
         if h and w:
             self.buildGrid(h, w)
 
@@ -202,7 +201,7 @@ class Wordfind(object):
             for char in range(self.size[1]):
                 if self.puzzle[line][char] == '+':
                     # we need to replace
-                    self.puzzle[line][char] = chr(random.randint(65, 90))
+                    self.puzzle[line][char] = random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
     # function to search for words and solve puzzle
     # will be later used to ensure the absence of unwanted words
@@ -260,3 +259,17 @@ class Wordfind(object):
             print(self.words, "\n", found)
         if set(found) == set(self.words):
             print("All words were found successfully.")
+
+    # Builds a cache of words to be used
+    # for randomization and extra searching
+    def build_cache(self, cache):
+        if type(cache) is str:
+            try:
+                cache = open(cache)
+            except FileNotFoundError:
+                print("Error: Cache unsuccessful")
+                return
+        for i in cache:
+            if i not in self.cache and len(i) < self.size[0] and len(i) < self.size[1]:
+                self.cache.append(i.strip())
+        self.cache.sort(key=len, reverse=True)
