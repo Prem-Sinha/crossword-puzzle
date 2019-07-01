@@ -18,6 +18,8 @@ _mailinglist
 .idea/
 docs/_build/
 wordnikapi.txt
+wordnik
+Oxford5000.txt
 
 # Coverage reports
 htmlcov/

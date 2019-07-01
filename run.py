@@ -2,8 +2,12 @@
 
 from wordfind import Wordfind
 
-wf = Wordfind()
-wf.buildGrid(15, 15)
+wf = Wordfind(15, 15)
+
+words_cache = open("Oxford5000.txt", "r")
+# words_cache = "Oxford5000.txt"
+wf.build_cache(words_cache)
+print(wf.cache)
 
 wf.putWordPlus('BRAVO', 1, 5, 5)
 wf.putWordPlus('TOSS', 1, 14, 14)
@@ -56,4 +60,6 @@ wf.fillPuzzle()
 wf.printCleanGrid_alt1()
 
 print("Running searcher function to solve puzzle.")
-wf.searcher(v=True)
+wf.searcher()
+
+words_cache.close()
