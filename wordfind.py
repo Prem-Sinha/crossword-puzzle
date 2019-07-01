@@ -6,7 +6,7 @@ __author__ = "Drew Hynes"
 __copyright__ = "Copyright 2019"
 __credits__ = ["Prem Sinha, Drew Hynes"]
 __license__ = "MIT"
-__version__ = "1.0.1"
+__version__ = "1.2"
 __maintainer__ = "Prem Sinha"
 __status__ = "In Development"
 
@@ -25,10 +25,12 @@ this is the direction mapping
 
 
 class Wordfind(object):
-
-    puzzle = ''
-    size = ()
-    words = []
+    def __init__(self, h=0, w=0):
+        self.puzzle = ''
+        self.size = ()
+        self.words = []
+        if h and w:
+            self.buildGrid(h, w)
 
     # this builds an empty grid
     def buildGrid(self, h, w):
@@ -214,17 +216,19 @@ class Wordfind(object):
             f_words[i].sort(key=len, reverse=True)
         if v:
             print(f"Words to find:\n{f_words}")
-            print(f_words)
         for line in range(self.size[0]):
             for char in range(self.size[1]):
-                if v: print("Initial position", line, char)
+                if v:
+                    print("Initial position", line, char)
                 pos = self.puzzle[line][char]
                 w_r = []
                 if pos in f_words:
                     for w in f_words[pos]:
-                        if v: print("Possibility of", w)
+                        if v:
+                            print("Possibility of", w)
                         for d in range(1, 9):
-                            if v: print("Direction, first letter", d, w[0])
+                            if v:
+                                print("Direction, first letter", d, w[0])
                             if self.checkWord(w, d, line, char):
                                 fit = True
                                 char_change = dirchange[d - 1][0]
@@ -232,22 +236,27 @@ class Wordfind(object):
                                 line_2 = line + line_change
                                 char_2 = char + char_change
                                 for i in range(1, len(w)):
-                                    if v: print("Letter and number, position to be checked", w[i], i, line_2, char_2)
+                                    if v:
+                                        print("Letter and number, position to be checked", w[i], i, line_2, char_2)
                                     if self.puzzle[line_2][char_2] != w[i]:
                                         fit = False
                                         break
                                     char_2 += char_change
                                     line_2 += line_change
                                 if fit:
-                                    if v: print("----------", end="\t")
+                                    if v:
+                                        print("----------", end="\t")
                                     print(f"{w} was found at ({line}, {char}).")
                                     found.append(w)
                                     w_r.append(w)
-                                    if v: print(w_r)
+                                    if v:
+                                        print(w_r)
                                     break
                     if w_r:
                         f_words[pos] = [i for i in f_words[pos] if i not in w_r]
-                        if v: print(f_words)
-        if v: print(self.words, "\n", found)
+                        if v:
+                            print(f_words)
+        if v:
+            print(self.words, "\n", found)
         if set(found) == set(self.words):
             print("All words were found successfully.")
