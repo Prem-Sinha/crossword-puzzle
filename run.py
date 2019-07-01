@@ -2,11 +2,14 @@
 
 from wordfind import Wordfind
 
-wf = Wordfind(15, 15)
-
 words_cache = open("Oxford5000.txt", "r")
-# words_cache = "Oxford5000.txt"
-wf.build_cache(words_cache)
+
+'''# words_cache = "Oxford5000.txt"
+wf.build_cache(words_cache)'''
+
+# wf = Wordfind(15, 15, "Oxford5000.txt")
+wf = Wordfind(15, 15, words_cache)
+
 print(wf.cache)
 
 wf.putWordPlus('BRAVO', 1, 5, 5)

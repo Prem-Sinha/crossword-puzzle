@@ -23,13 +23,15 @@ import random
 
 
 class Wordfind(object):
-    def __init__(self, h=0, w=0):
+    def __init__(self, h=0, w=0, cache=None):
         self.puzzle = ''
         self.size = ()
         self.words = []
         self.cache = []
         if h and w:
             self.buildGrid(h, w)
+        if cache:
+            self.build_cache(cache)
 
     # this builds an empty grid
     def buildGrid(self, h, w):
